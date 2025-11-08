@@ -19,4 +19,8 @@ void enqueue(queue_t* que, void* value);
 
 void* dequeue(queue_t* que);
 
+int queue_is_empty(queue_t* que);
+
+void queue_clear(queue_t* que);
+
 #endif

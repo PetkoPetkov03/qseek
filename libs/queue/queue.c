@@ -5,9 +5,7 @@
 
 queue_t* init_queue()
 {
-  queue_t* q = castp(malloc, queue_t, sizeof(queue_t));
-
-  q->front = q->rear = NULL;
+  queue_t* q = castp(calloc, queue_t, 1, sizeof(queue_t));
 
   return q;
 }
@@ -27,7 +25,13 @@ void enqueue(queue_t* que, void* value)
   }
 }
 
-void* dequeue(queue_t* que) {
+int queue_is_empty(queue_t* que) 
+{
+  return que->front == NULL && que->rear == NULL ? 1 : 0;
+}
+
+void* dequeue(queue_t* que) 
+{
   if(que->front == NULL) {
     return NULL;
   }
@@ -44,4 +48,14 @@ void* dequeue(queue_t* que) {
   free(temp);
 
   return val;
+}
+
+void queue_clear(queue_t *que) 
+{
+  void* temp;
+  while((temp = dequeue(que)) != NULL) {
+    free(temp);
+  }
+
+  free(que);
 }
