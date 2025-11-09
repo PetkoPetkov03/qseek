@@ -1,7 +1,12 @@
 #ifndef __TOKENS__
 #define __TOKENS__
 
+#include <stddef.h>
 #include <stdio.h>
+
+#define MAXINTSIZE 1000000
+#define MAXSTRNGLEN 8
+
 typedef enum __token_t__ {
     string, intconst, text,
     semicolon, period, quotas, othersy
@@ -18,7 +23,8 @@ static const char* TOKEN_NAMES[] = {
 };
 
 typedef struct __token_ident__ {
-    char* lexeme;
+    char lexeme[MAXSTRNGLEN];
+    size_t size;
 } token_ident;
 
 typedef struct __token_constant__ {
@@ -26,6 +32,7 @@ typedef struct __token_constant__ {
 } token_constant;
 
 typedef union __token_data__ {
+    char symb;
     token_ident ident;
     token_constant constant;
 } token_data;

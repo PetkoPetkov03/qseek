@@ -6,15 +6,14 @@
 typedef struct __context__ context_t;
 
 typedef struct __tokenizer__ {
-    queue_t* tokens;
     context_t* ctx;
 } tokenizer_t;
 
 tokenizer_t* init_tokenizer();
 
-void tokenize(tokenizer_t* tokenizer);
+void tokenize(context_t* ctx);
 
-void print_tokens(tokenizer_t* tokenizer);
+void print_tokens(context_t* ctx);
 
 void tokenizer_clean(tokenizer_t* tokenizer);
 

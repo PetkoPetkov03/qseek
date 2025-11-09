@@ -1,5 +1,6 @@
 #include "parser/token.h"
 #include <cast.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <parser/context.h>
 #include <parser/analyzer/analyzer.h>
@@ -12,20 +13,24 @@ analyzer_t* init_analyzer()
     return analyzer;
 }
 
-int accept(analyzer_t* analyzer)
+int accept(context_t* ctx, token_t T)
 {
-    if(analyzer->ctx->current_token.token_type == analyzer->symbol) {
-        tokenize(analyzer->ctx->tokenizer);
+    printf("DEV ENV\n");
+    print_token(ctx->cToken);
+    printf(" Epected token: %s\n", TOKEN_NAMES[T]);
+    if(ctx->cToken.token_type == T) {
+        tokenize(ctx);
         return 1;
     }
     return 0;
 }
 
-int expect(analyzer_t* analyzer)
+int expect(context_t* ctx, token_t T)
 {
-    if(accept(analyzer)) return 1;
+    if(accept(ctx, T)) return 1;
 
-    context_error_report(analyzer->ctx, "unexpected symbol");
+    context_error_report(ctx, "unexpected symbol");
+    
     return 0;
 }
 

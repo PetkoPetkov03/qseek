@@ -2,15 +2,26 @@
 #define __PARSER_CONTEXT__
 #include "parser/analyzer/analyzer.h"
 #include <parser/token.h>
+#include <stddef.h>
 
 typedef struct __scanner__ scanner_t;
 typedef struct __tokenizer__ tokenizer_t;
+
+#define MAXTOKENS 100000
 
 typedef struct __context__ {
     scanner_t* scanner;
     tokenizer_t* tokenizer;
     analyzer_t* analyzer;
-    token current_token;
+
+    token tokens[MAXTOKENS];
+    size_t tokensSize;
+    size_t tokensIndex;
+
+    token cToken;
+
+    char cChar;
+    int cConstant;
 
     const char* file_path;
 
@@ -19,6 +30,10 @@ typedef struct __context__ {
 } context_t;
 
 context_t context_init(const char* file_path);
+
+void context_next_char(context_t* ctx);
+
+void context_next_symbol(context_t* ctx);
 
 token context_next_token(context_t* context);
 

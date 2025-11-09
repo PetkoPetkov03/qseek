@@ -1,24 +1,42 @@
+#include <asm-generic/errno-base.h>
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <parser/context.h>
+#include "parser/analyzer/analyzer.h"
 #include "parser/token.h"
+#include "queue.h"
 #include <parser/scanner/scanner.h>
 #include <parser/tokenizer/tokenizer.h>
 #include <stdlib.h>
 #include <cast.h>
+#include <string.h>
 
 context_t context_init(const char* file_path) 
 {
     context_t ctx;
 
     ctx.file_path = file_path;
-    ctx.current_token = (token){ 0 };
     ctx.error_count = 0;
+
+    ctx.cChar = '\0';
+    memset(ctx.tokens, 0, MAXTOKENS*sizeof(token));
+    ctx.tokensIndex = 0;
+    ctx.tokensSize = 0;
 
     ctx.scanner = NULL;
     ctx.tokenizer = NULL;
 
     return ctx;
+}
+
+void context_next_char(context_t *ctx)
+{
+    scanner_t* scanner = ctx->scanner;
+
+    char temp = scanner_get_next_char(scanner);
+
+    ctx->cChar = temp;
 }
 
 void link_analyzer_instance(context_t *ctx, analyzer_t *analyzer) 
@@ -71,7 +89,7 @@ void abort_and_dump(context_t *context)
 
     printf("Error breakdown: %i errors thrown\n", context->error_count);
     for(int i = 0; i < context->error_count; i++) {
-        perror(context->errors[i]);
+        fprintf(stderr, "%s: %s\n", context->errors[i], strerror(EPERM));
     }
 
     context_clean(context);

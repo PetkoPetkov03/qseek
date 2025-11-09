@@ -1,7 +1,9 @@
 #include <parser/scanner/scanner.h>
 #include "parser/analyzer/analyzer.h"
+#include "parser/ruleset.h"
 #include "parser/tokenizer/tokenizer.h"
 #include <parser/context.h>
+#include <stdio.h>
 
 int main(void)
 {
@@ -15,13 +17,17 @@ int main(void)
     link_tokenizer_instance(&ctx, tokenizer);
     link_analyzer_instance(&ctx, analyzer);
 
-    tokenize(tokenizer);
+    scanner_load(scanner);
+
+    tokenize(&ctx);
+
+    file(&ctx);
 
     if(context_is_error_trown(&ctx)) {
         abort_and_dump(&ctx);
     }
 
-    print_tokens(tokenizer);
+    print_tokens(&ctx);
 
     context_clean(&ctx);
     
