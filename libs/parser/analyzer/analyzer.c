@@ -15,9 +15,6 @@ analyzer_t* init_analyzer()
 
 int accept(context_t* ctx, token_t T)
 {
-    printf("DEV ENV\n");
-    print_token(ctx->cToken);
-    printf(" Epected token: %s\n", TOKEN_NAMES[T]);
     if(ctx->cToken.token_type == T) {
         tokenize(ctx);
         return 1;

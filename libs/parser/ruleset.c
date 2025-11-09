@@ -9,7 +9,6 @@ void file(context_t *ctx)
     record(ctx);
 
     while ((ctx->cToken.token_type == intconst) || (ctx->cToken.token_type == quotas)) {
-        tokenize(ctx);
         record(ctx);
     }
 }
@@ -29,7 +28,7 @@ void record(context_t *ctx)
 void field(context_t *ctx)
 {
     if(accept(ctx, intconst)) {
-        
+        return;
     }else if(accept(ctx, quotas)) {
         expect(ctx, text);
         expect(ctx, quotas);

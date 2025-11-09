@@ -28,97 +28,74 @@ void tokenize(context_t* ctx)
         context_next_char(ctx);
     }
 
-    printf("Current Char: %c\n", ctx->cChar);
+    if(isalpha(ctx->cChar)) {
+        int strSizeFlag = 0;
+        do {
+            if(size < MAXSTRNGLEN) {
+                lexeme[size++] = toupper(ctx->cChar);
+            }
 
-    while(ctx->cChar == ' ') context_next_char(ctx);
-
-    switch (toupper(ctx->cChar)) {
-        case 'A' - 'Z': {
-            
-            do {
-                if(size < MAXSTRNGLEN) {
-                    lexeme[size++] = toupper(ctx->cChar);
-                }
-
-                context_next_char(ctx);
-            } while(((toupper(ctx->cChar) >= 'A') && (toupper(ctx->cChar) <= 'Z')) || ((ctx->cChar >= '0') && (ctx->cChar <= '9')) );
-
-            token token = { 0 };
-
-            token.token_type = text;
-            strcpy(token.data.ident.lexeme, lexeme);
-
-            ctx->cToken = token;
-
-            ctx->tokens[ctx->tokensSize++] = token;
-        } break;
-
-        case '0' - '9': {
-            ctx->cConstant = 0;
-
-            do {
-                digit = (unsigned int)(ctx->cChar);
-
-                if((ctx->cConstant < (MAXINTSIZE/10)) ||
-                    ((ctx->cConstant == (MAXINTSIZE/10) && (digit = (MAXINTSIZE%10)) ))) {
-                        ctx->cConstant = (10 * ctx->cConstant) + digit;
-                }else {
-                    context_error_report(ctx, "int constant too large");
-                }
-
-                context_next_char(ctx);
-
-                token t = { 0 };
-                t.token_type = intconst;
-                t.data.constant.constant = ctx->cConstant;
-
-                ctx->cToken = t;
-                ctx->tokens[ctx->tokensSize++] = t;
-            } while((ctx->cChar >= '0') && (ctx->cChar <= '9'));
-        } break;
-
-        case '.': {
-            token t = { 0 };
-
-            t.token_type = period;
+            if(size >= MAXSTRNGLEN && strSizeFlag == 0) {
+                context_error_report(ctx, "String overflow: array too large max 8 bytes");
+                strSizeFlag = 1;
+            }
 
             context_next_char(ctx);
+        } while(isalnum(ctx->cChar));
 
-            ctx->cToken = t;
-            ctx->tokens[ctx->tokensSize++] = t;
-        } break;
-
-        case ';': {
-            token t = { 0 };
-
-            t.token_type = semicolon;
-
-            ctx->cToken = t;
-            ctx->tokens[ctx->tokensSize++] = t;
-
+        token t = {0};
+        t.token_type = text;
+        strcpy(t.data.ident.lexeme, lexeme);
+        ctx->cToken = t;
+        ctx->tokens[ctx->tokensSize++] = t;
+    } 
+    else if(isdigit(ctx->cChar)) {
+        ctx->cConstant = 0;
+        do {
+            digit = ctx->cChar - '0';
+            if((ctx->cConstant < (MAXINTSIZE/10)) ||
+               ((ctx->cConstant == (MAXINTSIZE/10)) && (digit <= (MAXINTSIZE%10)))) {
+                ctx->cConstant = (10 * ctx->cConstant) + digit;
+            } else {
+                context_error_report(ctx, "int constant too large");
+            }
             context_next_char(ctx);
-        } break;
+        } while(isdigit(ctx->cChar));
 
-        case '"': {
-            token t = { 0 };
-
-            t.token_type = quotas;
-            ctx->cToken = t;
-            ctx->tokens[ctx->tokensSize++] = t;
-            context_next_char(ctx);
-        } break;
-
-        default: {
-            token t = { 0 };
-
-            t.token_type = othersy;
-            t.data.symb = ctx->cChar;
-
-            ctx->cToken = t;
-            ctx->tokens[ctx->tokensSize++] = t;
-
-            context_next_char(ctx);
-        } break;
+        token t = {0};
+        t.token_type = intconst;
+        t.data.constant.constant = ctx->cConstant;
+        ctx->cToken = t;
+        ctx->tokens[ctx->tokensSize++] = t;
+    } 
+    else if(ctx->cChar == '.') {
+        token t = {0};
+        t.token_type = period;
+        ctx->cToken = t;
+        ctx->tokens[ctx->tokensSize++] = t;
+        context_next_char(ctx);
+    } 
+    else if(ctx->cChar == ';') {
+        token t = {0};
+        t.token_type = semicolon;
+        ctx->cToken = t;
+        ctx->tokens[ctx->tokensSize++] = t;
+        context_next_char(ctx);
+    } 
+    else if(ctx->cChar == '"') {
+        token t = {0};
+        t.token_type = quotas;
+        ctx->cToken = t;
+        ctx->tokens[ctx->tokensSize++] = t;
+        context_next_char(ctx);
+    } 
+    else {
+        token t = {0};
+        t.token_type = othersy;
+        t.data.symb = ctx->cChar;
+        ctx->cToken = t;
+        ctx->tokens[ctx->tokensSize++] = t;
+        context_next_char(ctx);
     }
 }
 
