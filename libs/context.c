@@ -82,6 +82,7 @@ void context_clean(context_t *context)
     if(context->analyzer) {
         analyzer_clean(context->analyzer);
     }
+
 }
 
 void abort_and_dump(context_t *context)

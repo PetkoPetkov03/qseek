@@ -1,7 +1,6 @@
 
 #include "cast.h"
 #include "parser/token.h"
-#include "queue.h"
 #include <ctype.h>
 #include <parser/tokenizer/tokenizer.h>
 #include <parser/scanner/scanner.h>
@@ -50,6 +49,7 @@ void tokenize(context_t* ctx)
         ctx->tokens[ctx->tokensSize++] = t;
     } 
     else if(isdigit(ctx->cChar)) {
+        int digitTooLargeFlag = 0;
         ctx->cConstant = 0;
         do {
             digit = ctx->cChar - '0';
@@ -57,7 +57,10 @@ void tokenize(context_t* ctx)
                ((ctx->cConstant == (MAXINTSIZE/10)) && (digit <= (MAXINTSIZE%10)))) {
                 ctx->cConstant = (10 * ctx->cConstant) + digit;
             } else {
-                context_error_report(ctx, "int constant too large");
+                if(digitTooLargeFlag == 0) {
+                    context_error_report(ctx, "int constant too large");
+                    digitTooLargeFlag = 1;
+                }
             }
             context_next_char(ctx);
         } while(isdigit(ctx->cChar));

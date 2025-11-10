@@ -1,7 +1,7 @@
 # Compiler and flags
 CC := gcc
 INCLUDES := -I./includes
-CFLAGS := -Wall -Wextra -O3 $(INCLUDES)
+CFLAGS := -Wall -Wextra -Wshadow -Wuninitialized -O3 $(INCLUDES)
 
 # Directories
 LIBS_DIR := libs

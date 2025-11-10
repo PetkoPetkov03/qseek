@@ -3,7 +3,6 @@
 #include "parser/ruleset.h"
 #include "parser/tokenizer/tokenizer.h"
 #include <parser/context.h>
-#include <stdio.h>
 
 int main(void)
 {

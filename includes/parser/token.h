@@ -42,11 +42,11 @@ typedef struct __token__ {
     token_data data;
 } token;
 
-inline static void print_token(token token) 
+inline static void print_token(token t) 
 {
     char buff[100];
-    printf("Token-Type: [%s] lex [%s]\n", TOKEN_NAMES[token.token_type], token.token_type == intconst ?  (
-    sprintf(buff, "%i", token.data.constant.constant)  ), buff : token.data.ident.lexeme);
+    printf("Token-Type: [%s] lex [%s]\n", TOKEN_NAMES[t.token_type], t.token_type == intconst ?  (
+    sprintf(buff, "%i", t.data.constant.constant)  ), buff : t.data.ident.lexeme);
 }
 
 #endif
