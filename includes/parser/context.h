@@ -9,6 +9,11 @@ typedef struct __tokenizer__ tokenizer_t;
 
 #define MAXTOKENS 100000
 
+typedef enum {
+    DEFAULT,
+    URL
+} parser_t;
+
 typedef struct __context__ {
     scanner_t* scanner;
     tokenizer_t* tokenizer;
@@ -27,9 +32,13 @@ typedef struct __context__ {
 
     int error_count;
     char* errors[100];
+
+    parser_t parser_type;
 } context_t;
 
 context_t context_init(const char* file_path);
+
+void set_mode(context_t* ctx, parser_t ptype);
 
 void context_next_char(context_t* ctx);
 

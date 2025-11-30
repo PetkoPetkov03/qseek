@@ -1,12 +1,17 @@
+#define USE_CUSTOM_PARSER 1
+#include "parser/tokenizer/tokenizer.h"
 #include <parser/scanner/scanner.h>
 #include "parser/analyzer/analyzer.h"
 #include "parser/ruleset.h"
-#include "parser/tokenizer/tokenizer.h"
 #include <parser/context.h>
+
 
 int main(void)
 {
-    context_t ctx = context_init("/home/petkosuse/Dev/qseek/examples/parser/test.txt");
+    context_t ctx =
+    context_init("/home/petkosuse/Dev/qseek/examples/parser/testurl.txt");
+
+    set_mode(&ctx, URL);
 
     tokenizer_t* tokenizer = init_tokenizer();
     scanner_t* scanner = init_scanner();
@@ -18,9 +23,7 @@ int main(void)
 
     scanner_load(scanner);
 
-    tokenize(&ctx);
-
-    file(&ctx);
+    parse_func(&ctx);
 
     if(context_is_error_trown(&ctx)) {
         abort_and_dump(&ctx);
@@ -29,6 +32,6 @@ int main(void)
     print_tokens(&ctx);
 
     context_clean(&ctx);
-    
+
     return 0;
 }

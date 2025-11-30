@@ -6,7 +6,7 @@
 #include <parser/analyzer/analyzer.h>
 #include <parser/tokenizer/tokenizer.h>
 
-analyzer_t* init_analyzer() 
+analyzer_t* init_analyzer()
 {
     analyzer_t* analyzer = castp(malloc, analyzer_t, sizeof(analyzer_t));
 
@@ -26,8 +26,9 @@ int expect(context_t* ctx, token_t T)
 {
     if(accept(ctx, T)) return 1;
 
+    //print_tokens(ctx);
     context_error_report(ctx, "unexpected symbol");
-    
+
     return 0;
 }
 
