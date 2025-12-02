@@ -5,12 +5,18 @@
 #include <parser/context.h>
 #include <string.h>
 
-void host(context_t *ctx)
+void hostname(context_t *ctx)
 {
-    expect(ctx, xalphas);
     while(accept(ctx, dotseparator)) {
         expect(ctx, xalphas);
     }
+}
+
+void hostip(context_t *ctx)
+{
+  while(accept(ctx, dotseparator)) {
+    expect(ctx, digits);
+  }
 }
 
 void port(context_t *ctx)
@@ -28,7 +34,15 @@ void port(context_t *ctx)
 void hostport(context_t *ctx)
 {
     printf("hostport start\n");
-    host(ctx);
+
+    if(accept(ctx, xalphas)) {
+      hostname(ctx);
+    }else if(accept(ctx, digits)) {
+      hostip(ctx);
+    }else {
+      context_error_report(ctx, "host pattern unrecognized");
+    }
+    
     if(ctx->cToken.token_type == column) {
         port(ctx);
     }
@@ -65,33 +79,25 @@ void url(context_t *ctx)
     if(accept(ctx, httpd)) {
         printf("HTTP START\n");
         http(ctx);
+    }else if(accept(ctx, tcp)) {
+
+    } else {
+      context_error_report(ctx, "Unsuported protocol");
     }
 }
 
-void parse_func(context_t *ctx)
+void field(context_t *ctx)
 {
-    if(ctx->parser_type == DEFAULT) {
-        tokenize(ctx);
-        file(ctx);
-    }
-
-    if(ctx->parser_type == URL) {
-        printf("URL START\n");
-        tokenize(ctx);
-
-        url(ctx);
+    if(accept(ctx, intconst)) {
+        return;
+    }else if(accept(ctx, quotas)) {
+        expect(ctx, text);
+        expect(ctx, quotas);
+    }else {
+        context_error_report(ctx, "expected intconst or string");
     }
 }
 
-void file(context_t *ctx)
-{
-    record(ctx);
-
-    while ((ctx->cToken.token_type == intconst)
-    || (ctx->cToken.token_type == quotas)) {
-        record(ctx);
-    }
-}
 
 void record(context_t *ctx)
 {
@@ -105,14 +111,28 @@ void record(context_t *ctx)
     expect(ctx, period);
 }
 
-void field(context_t *ctx)
+void file(context_t *ctx)
 {
-    if(accept(ctx, intconst)) {
-        return;
-    }else if(accept(ctx, quotas)) {
-        expect(ctx, text);
-        expect(ctx, quotas);
-    }else {
-        context_error_report(ctx, "expected intconst or string");
+    record(ctx);
+
+    while ((ctx->cToken.token_type == intconst)
+    || (ctx->cToken.token_type == quotas)) {
+        record(ctx);
+    }
+}
+
+
+void parse_func(context_t *ctx)
+{
+    if(ctx->parser_type == DEFAULT) {
+        tokenize(ctx);
+        file(ctx);
+    }
+
+    if(ctx->parser_type == URL) {
+        printf("URL START\n");
+        tokenize(ctx);
+
+        url(ctx);
     }
 }

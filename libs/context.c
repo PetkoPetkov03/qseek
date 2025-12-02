@@ -20,7 +20,6 @@ context_t context_init(const char* file_path)
     ctx.error_count = 0;
 
     ctx.cChar = '\0';
-    memset(ctx.tokens, 0, MAXTOKENS*sizeof(token));
     ctx.tokensIndex = 0;
     ctx.tokensSize = 0;
 

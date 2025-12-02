@@ -23,7 +23,7 @@ typedef enum __token_t__ {
     */
     digits, xalphas, xpalphas, safe,
     extra, hex, separator, dotseparator,
-    esc, column, httpd
+    esc, column, httpd, tcp
 } token_t;
 
 static const char* TOKEN_NAMES[] = {
@@ -53,7 +53,8 @@ static const char* TOKEN_NAMES[] = {
     "DOTSEPARATOR",
     "ESCAPE",
     "COLUMN",
-    "HTTP/HTTPS"
+    "HTTP/HTTPS",
+    "TCP"
 };
 
 typedef struct __token_ident__ {

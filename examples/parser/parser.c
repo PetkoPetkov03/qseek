@@ -9,7 +9,7 @@
 int main(void)
 {
     context_t ctx =
-    context_init("/home/petkosuse/Dev/qseek/examples/parser/testurl.txt");
+    context_init("/home/voidpetko/Dev/qseek/examples/parser/testurl.txt");
 
     set_mode(&ctx, URL);
 
