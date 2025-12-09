@@ -5,22 +5,21 @@
 
 int main()
 {
-  queue_t* queue = init_queue();
+    queue_t* queue = init_queue();
 
-  for(char i = 'a'; i <= 'z'; i++) {
-    char* buff = castp(malloc, char, sizeof(char));
+    char i;
+    for(char a = 'a'; a <= 'z'; a++) {
+        char* c = castp(malloc, char, sizeof(char));
+        *c = a;
+        enqueue(queue, c);
+    }
 
-    *buff = i;
 
-    enqueue(queue, buff);
-  }
+    while(!queue_is_empty(queue)) {
+        i = cast_safe(dequeue, char, queue);
 
+        printf("%c\n", i);
+    }
 
-  while(!queue_is_empty(queue)) {
-    char buff = cast_safe(dequeue, char, queue);
-
-    printf("%c\n", buff);
-  }
-
-  queue_clear(queue);
+    queue_clear(queue);
 }

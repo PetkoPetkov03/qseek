@@ -12,7 +12,7 @@
 #include <cast.h>
 #include <string.h>
 
-context_t context_init(const char* file_path) 
+context_t context_init(const char* file_path)
 {
     context_t ctx;
 
@@ -20,7 +20,6 @@ context_t context_init(const char* file_path)
     ctx.error_count = 0;
 
     ctx.cChar = '\0';
-    memset(ctx.tokens, 0, MAXTOKENS*sizeof(token));
     ctx.tokensIndex = 0;
     ctx.tokensSize = 0;
 
@@ -28,6 +27,11 @@ context_t context_init(const char* file_path)
     ctx.tokenizer = NULL;
 
     return ctx;
+}
+
+void set_mode(context_t *ctx, parser_t ptype)
+{
+    ctx->parser_type = ptype;
 }
 
 void context_next_char(context_t *ctx)
@@ -39,19 +43,19 @@ void context_next_char(context_t *ctx)
     ctx->cChar = temp;
 }
 
-void link_analyzer_instance(context_t *ctx, analyzer_t *analyzer) 
+void link_analyzer_instance(context_t *ctx, analyzer_t *analyzer)
 {
     ctx->analyzer = analyzer;
     analyzer->ctx = ctx;
 }
 
-void link_scanner_instance(context_t *ctx, scanner_t *scanner) 
+void link_scanner_instance(context_t *ctx, scanner_t *scanner)
 {
     ctx->scanner = scanner;
     scanner->ctx = ctx;
 }
 
-void link_tokenizer_instance(context_t *ctx, tokenizer_t *tokenizer) 
+void link_tokenizer_instance(context_t *ctx, tokenizer_t *tokenizer)
 {
     ctx->tokenizer = tokenizer;
     tokenizer->ctx = ctx;
@@ -62,7 +66,7 @@ void context_error_report(context_t *ctx, const char *message)
     ctx->errors[ctx->error_count++] = (char*)message;
 }
 
-int context_is_error_trown(context_t *ctx) 
+int context_is_error_trown(context_t *ctx)
 {
     if(ctx->error_count > 0) return 1;
     return 0;
@@ -76,7 +80,7 @@ void context_clean(context_t *context)
     }
 
     if(context->tokenizer) {
-        tokenizer_clean(context->tokenizer);    
+        tokenizer_clean(context->tokenizer);
     }
 
     if(context->analyzer) {
@@ -87,7 +91,7 @@ void context_clean(context_t *context)
 
 void abort_and_dump(context_t *context)
 {
-
+    print_tokens(context);
     printf("Error breakdown: %i errors thrown\n", context->error_count);
     for(int i = 0; i < context->error_count; i++) {
         fprintf(stderr, "%s: %s\n", context->errors[i], strerror(EPERM));

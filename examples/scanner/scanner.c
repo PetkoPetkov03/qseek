@@ -6,7 +6,8 @@
 
 int main()
 {
-  context_t ctx = context_init("/home/petkosuse/Dev/qseek/examples/scanner/test.txt");
+    context_t ctx =
+    context_init("/home/petkosuse/Dev/qseek/examples/scanner/test.txt");
   scanner_t* scanner = init_scanner();
 
   link_scanner_instance(&ctx, scanner);
