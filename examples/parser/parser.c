@@ -6,7 +6,8 @@
 
 int main(void)
 {
-    context_t ctx = context_init("/home/petkosuse/Dev/qseek/examples/parser/test.txt");
+    context_t ctx = context_init("/home/voidpetko/Dev/III/qseek/examples/parser/test.txt");
+
 
     tokenizer_t* tokenizer = init_tokenizer();
     scanner_t* scanner = init_scanner();
