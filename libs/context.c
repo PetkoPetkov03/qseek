@@ -70,7 +70,7 @@ int context_is_error_trown(context_t *ctx)
 
 void context_clean(context_t *context)
 {
-
+ 
     if(context->scanner) {
         scanner_clean(context->scanner);
     }
