@@ -1,6 +1,6 @@
 #ifndef __PARSER_SCANNER__
 #define __PARSER_SCANNER__
-#include <queue.h>
+#include <stl/queue.h>
 
 typedef struct __context__ context_t;
 

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <btree.h>
-#include <cast.h>
+#include <stl/btree.h>
+#include <stl/cast.h>
 
 void add_tree_impl(btree** tree, ntype item, btree* parent)
 {

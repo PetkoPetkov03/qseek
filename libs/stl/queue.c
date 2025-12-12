@@ -1,6 +1,6 @@
-#include <queue.h>
+#include <stl/queue.h>
 #include <stdlib.h>
-#include <cast.h>
+#include <stl/cast.h>
 #include <stddef.h>
 
 queue_t* init_queue()

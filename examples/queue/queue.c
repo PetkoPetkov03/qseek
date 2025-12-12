@@ -1,7 +1,7 @@
-#include <queue.h>
+#include <stl/queue.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <cast.h>
+#include <stl/cast.h>
 
 int main()
 {

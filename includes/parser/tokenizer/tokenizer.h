@@ -1,7 +1,7 @@
 #ifndef __PARSER_TOKENIZER__
 #define __PARSER_TOKENIZER__
-#include <queue.h>
-#include <cast.h>
+#include <stl/queue.h>
+#include <stl/cast.h>
 
 typedef struct __context__ context_t;
 

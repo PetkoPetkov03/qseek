@@ -1,10 +1,10 @@
-#include "queue.h"
+#include <stl/queue.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <parser/scanner/scanner.h>
 #include <parser/context.h>
-#include <cast.h>
+#include <stl/cast.h>
 #include <stdio.h>
 
 scanner_t* init_scanner()

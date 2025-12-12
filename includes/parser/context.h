@@ -2,6 +2,8 @@
 #define __PARSER_CONTEXT__
 #include "parser/analyzer/analyzer.h"
 #include <parser/token.h>
+#include <parser/tokenizer/tokenizer.h>
+#include <parser/scanner/scanner.h>
 #include <stddef.h>
 
 typedef struct __scanner__ scanner_t;
@@ -59,5 +61,18 @@ int context_is_error_trown(context_t* ctx);
 void abort_and_dump(context_t* context);
 
 void context_clean(context_t *context);
+
+inline static void configure_linking(context_t *ctx)
+{
+    tokenizer_t* tokenizer = init_tokenizer();
+    scanner_t* scanner = init_scanner();
+    analyzer_t* analyzer = init_analyzer();
+
+    link_scanner_instance(ctx, scanner);
+    link_tokenizer_instance(ctx, tokenizer);
+    link_analyzer_instance(ctx, analyzer);
+
+    scanner_load(scanner);
+}
 
 #endif

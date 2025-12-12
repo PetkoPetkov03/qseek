@@ -1,7 +1,7 @@
 #include "parser/context.h"
 #include <parser/scanner/scanner.h>
 #include <stdio.h>
-#include <cast.h>
+#include <stl/cast.h>
 #include <stdlib.h>
 
 int main()

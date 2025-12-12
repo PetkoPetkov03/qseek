@@ -35,15 +35,7 @@ int main(void)
 
     set_mode(&ctx, URL);
 
-    tokenizer_t* tokenizer = init_tokenizer();
-    scanner_t* scanner = init_scanner();
-    analyzer_t* analyzer = init_analyzer();
-
-    link_scanner_instance(&ctx, scanner);
-    link_tokenizer_instance(&ctx, tokenizer);
-    link_analyzer_instance(&ctx, analyzer);
-
-    scanner_load(scanner);
+    configure_linking(&ctx);
 
     parse_func(&ctx);
 
