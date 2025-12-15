@@ -62,7 +62,7 @@ void client_parse_url()
 
     parse_func(&ctx);
 
-    if(context_is_error_trown(&ctx)) {
+    if(context_is_errors_thrown(&ctx)) {
         abort_and_dump(&ctx);
     }
 

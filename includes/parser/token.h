@@ -23,7 +23,12 @@ typedef enum __token_t__ {
     */
     digits, xalphas, xpalphas, safe,
     extra, hex, separator, dotseparator,
-    esc, column, httpd, tcp
+    esc, column, httpd, tcp,
+
+    /*
+    HTML tokens
+    */
+    tagstart, tagend, ctagstart, ctagend, tagp, htmlstr, htmlident
 } token_t;
 
 static const char* TOKEN_NAMES[] = {
@@ -54,7 +59,17 @@ static const char* TOKEN_NAMES[] = {
     "ESCAPE",
     "COLUMN",
     "HTTP/HTTPS",
-    "TCP"
+    "TCP",
+
+    /*
+    HTML TOKEN NAMES
+    */
+    "OTAGBEGIN",
+    "OTAGEND",
+    "CTAGBEGIN",
+    "CTAGEND",
+    "HTMLSTR",
+    "HTMLINDENTIFIER"
 };
 
 typedef struct __token_ident__ {

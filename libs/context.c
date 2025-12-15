@@ -66,7 +66,7 @@ void context_error_report(context_t *ctx, const char *message)
     ctx->errors[ctx->error_count++] = (char*)message;
 }
 
-int context_is_error_trown(context_t *ctx)
+int context_is_errors_thrown(context_t *ctx)
 {
     if(ctx->error_count > 0) return 1;
     return 0;

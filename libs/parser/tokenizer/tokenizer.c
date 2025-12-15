@@ -198,6 +198,62 @@ void tokenize_url(context_t *ctx)
     }
 }
 
+void tokenize_html(context_t* ctx)
+{
+    char lexeme[MAXSTRNGLENURL] = { 0 };
+    size_t size = 0;
+
+    if(ctx->cChar == '\0') {
+        context_next_char(ctx);
+    }
+
+    if(ctx->cChar == '<') {
+        int isCtag = 0;
+        lexeme[size++] = ctx->cChar;
+        context_next_char(ctx);
+        if(ctx->cChar == '/') {
+            isCtag = 1;
+            lexeme[size++] = ctx->cChar;
+            context_next_char(ctx);
+        }
+
+        token t = {0};
+
+        if(isCtag == 1) {
+            t.token_type = ctagstart;
+        }else {
+            t.token_type = tagstart;
+        }
+
+        strcpy(t.data.ident.lexeme, lexeme);
+        t.data.ident.size = strlen(lexeme);
+
+        ctx->cToken = t;
+        ctx->tokens[ctx->tokensSize++] = t;
+
+    } else if (ctx->cChar  == '>') {
+        token t = {0};
+
+        t.token_type = tagend;
+
+        ctx->cToken = t;
+        ctx->tokens[ctx->tokensSize++] = t;
+    } else {
+        do {
+            lexeme[size++] = ctx->cChar;
+            context_next_char(ctx);
+        } while(isalnum(ctx->cChar));
+
+        token t = {0};
+
+        strcpy(t.data.ident.lexeme, lexeme);
+        t.data.ident.size = strlen(lexeme);
+
+        ctx->cToken = t;
+        ctx->tokens[ctx->tokensSize++] = t;
+    }
+}
+
 void tokenize(context_t* ctx)
 {
     switch(ctx->parser_type) {
@@ -208,6 +264,10 @@ void tokenize(context_t* ctx)
     case URL: {
         tokenize_url(ctx);
     } break;
+
+    case HTML: {
+        tokenize_html(ctx);
+    }break;
 
     default:
         CALLPANIC("Parse mode unspecified or unsuported");

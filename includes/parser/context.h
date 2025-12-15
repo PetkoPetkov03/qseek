@@ -13,7 +13,8 @@ typedef struct __tokenizer__ tokenizer_t;
 
 typedef enum {
     DEFAULT,
-    URL
+    URL,
+    HTML
 } parser_t;
 
 typedef struct __context__ {
@@ -56,7 +57,7 @@ void link_tokenizer_instance(context_t* ctx, tokenizer_t* tokenizer);
 
 void context_error_report(context_t* ctx, const char* message);
 
-int context_is_error_trown(context_t* ctx);
+int context_is_errors_thrown(context_t* ctx);
 
 void abort_and_dump(context_t* context);
 
