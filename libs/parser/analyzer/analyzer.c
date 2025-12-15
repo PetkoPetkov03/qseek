@@ -13,7 +13,7 @@ analyzer_t* init_analyzer()
     return analyzer;
 }
 
-int accept(context_t* ctx, token_t T)
+int accept_token(context_t* ctx, token_t T)
 {
     if(ctx->cToken.token_type == T) {
         tokenize(ctx);
@@ -24,7 +24,7 @@ int accept(context_t* ctx, token_t T)
 
 int expect(context_t* ctx, token_t T)
 {
-    if(accept(ctx, T)) return 1;
+    if(accept_token(ctx, T)) return 1;
 
     //print_tokens(ctx);
     context_error_report(ctx, "unexpected symbol");

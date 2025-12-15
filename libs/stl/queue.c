@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stl/cast.h>
 #include <stddef.h>
+#include <stdio.h>
 
 queue_t* init_queue()
 {
@@ -25,12 +26,12 @@ void enqueue(queue_t* que, void* value)
   }
 }
 
-int queue_is_empty(queue_t* que) 
+int queue_is_empty(queue_t* que)
 {
   return que->front == NULL && que->rear == NULL ? 1 : 0;
 }
 
-void* dequeue(queue_t* que) 
+void* dequeue(queue_t* que)
 {
   if(que->front == NULL) {
     return NULL;
@@ -50,7 +51,7 @@ void* dequeue(queue_t* que)
   return val;
 }
 
-void queue_clear(queue_t *que) 
+void queue_clear(queue_t *que)
 {
   void* temp;
   while((temp = dequeue(que)) != NULL) {

@@ -90,7 +90,7 @@ inline static char* token_lex(token* t)
 {
     if(t->data.ident.size <= 1) {
         print_token(*t);
-        printf("%d\n", t->data.ident.size);
+        printf("%ld\n", t->data.ident.size);
         CALLPANIC("Token dosen't have a defined lexeme");
     }
 

@@ -1,5 +1,5 @@
-#ifndef __HTTP_CLIENT__
-#define __HTTP_CLIENT__
+#ifndef __HTTP_DNS__
+#define __HTTP_DNS__
 
 #include <sys/socket.h>
 #include <netdb.h>

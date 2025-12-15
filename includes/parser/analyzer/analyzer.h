@@ -9,7 +9,7 @@ typedef struct __analyzer__ {
 } analyzer_t;
 
 analyzer_t* init_analyzer();
-int accept(context_t*, token_t);
+int accept_token(context_t*, token_t);
 int expect(context_t*, token_t);
 
 void analyzer_clean(analyzer_t*);

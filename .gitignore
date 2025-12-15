@@ -2,3 +2,5 @@ vgcore*
 bin/
 objects/
 pwd.txt
+test.txt
+cache/

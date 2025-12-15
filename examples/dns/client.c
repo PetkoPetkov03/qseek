@@ -1,4 +1,4 @@
-#include <httpc/client.h>
+#include <httpc/dns.h>
 #include <stdio.h>
 
 int main()

@@ -17,9 +17,12 @@ size_t hash(void* value, size_t vsize)
 
 void hset_store_impl(Hash_Set* set, void* key, void* value, size_t offset)
 {
-    size_t hashv = (hash(key, sizeof(key)/sizeof(key[0])) + offset);
+    char* key_stringified = (char*)key;
+    size_t hashv = (hash(key,
+    sizeof(key_stringified[0])/sizeof(key_stringified)) + offset);
+
     if(hashv >= MAXBUFFERSIZE) {
-        fprintf(stderr, "Hash out of bounds %d\n", hash);
+        fprintf(stderr, "Hash out of bounds %ld\n", hashv);
         exit(EXIT_FAILURE);
     };
 
@@ -37,9 +40,18 @@ void hset_store_impl(Hash_Set* set, void* key, void* value, size_t offset)
     set->buffer[hashv] = hpair;
 }
 
+int hashpair_isnull(Hash_Pair hp)
+{
+    Hash_Pair npair = {0};
+    if(hp.key == npair.key && hp.value == npair.value) return 0;
+    return 1;
+}
+
 void* hset_get(Hash_Set* set, void* key)
 {
-    size_t hashv = (hash(key, sizeof(key)/sizeof(key[0])));
+    char* key_stringified = (char*)key;
+    size_t hashv = (hash(key,
+    sizeof(key_stringified[0])/sizeof(key_stringified)));
 
     if(hashv >= MAXBUFFERSIZE) {
         return NULL;
@@ -47,7 +59,14 @@ void* hset_get(Hash_Set* set, void* key)
 
     Hash_Pair value_index = set->buffer[hashv];
 
+    int loop_index = 0;
     while(strcmp((char*)key, (char*)value_index.key) != 0) {
+        loop_index++;
+        if(loop_index >= MAXBUFFERSIZE) {
+            fprintf(stderr, "Element not found: index[%d]\n", loop_index);
+            return NULL;
+        }
+
         value_index = set->buffer[hashv+1];
     }
 
