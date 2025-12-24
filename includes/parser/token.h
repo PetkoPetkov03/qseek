@@ -28,7 +28,7 @@ typedef enum __token_t__ {
     /*
     HTML tokens
     */
-    tagstart, tagend, ctagstart, ctagend, tagp, htmlstr, htmlident
+    tagstart, tagend, ctagstart, ctagend, tagp, htmlstr, htmlident, assign
 } token_t;
 
 static const char* TOKEN_NAMES[] = {
@@ -68,8 +68,10 @@ static const char* TOKEN_NAMES[] = {
     "OTAGEND",
     "CTAGBEGIN",
     "CTAGEND",
+    "TAGPROP",
     "HTMLSTR",
-    "HTMLINDENTIFIER"
+    "HTMLINDENTIFIER",
+    "PROPASSIGN"
 };
 
 typedef struct __token_ident__ {

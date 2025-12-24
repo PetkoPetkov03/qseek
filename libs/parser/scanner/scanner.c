@@ -34,6 +34,10 @@ void scanner_load(scanner_t* scanner)
   while((read(fd, &buff, 1)) != 0) {
       char* p = malloc(1);
       *p = buff;
+      if(*p == '\0' || *p == '\r' || *p == '\n') {
+          free(p);
+          continue;
+      }
       enqueue(scanner->scanner_queue, p);
   }
 
@@ -42,9 +46,9 @@ void scanner_load(scanner_t* scanner)
 
 char scanner_get_next_char(scanner_t* scanner)
 {
-  char symbol = cast_safe(dequeue, char, scanner->scanner_queue);
+    char symbol = cast_safe(dequeue, char, scanner->scanner_queue);
 
-  return symbol;
+    return symbol;
 }
 
 void scanner_clean(scanner_t *scanner)

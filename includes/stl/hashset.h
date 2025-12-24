@@ -18,8 +18,9 @@ typedef struct __hash_set__ {
 hset_store_impl(set, key, value, 0);\
 } while(0);
 
-void hset_store_impl(Hash_Set* set, void* key, void* value, size_t offset);
+void hset_store_impl(Hash_Set* set,
+const void* key, void* value, size_t offset);
 
-void* hset_get(Hash_Set* set, void* key);
+void* hset_get(Hash_Set* set, const void* key);
 
 #endif

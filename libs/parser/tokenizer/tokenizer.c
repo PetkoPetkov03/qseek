@@ -198,12 +198,20 @@ void tokenize_url(context_t *ctx)
     }
 }
 
+static int ident = 0;
+static int isInTag = 0;
+static int isAfterAssn = 0;
+
 void tokenize_html(context_t* ctx)
 {
     char lexeme[MAXSTRNGLENURL] = { 0 };
     size_t size = 0;
 
     if(ctx->cChar == '\0') {
+        context_next_char(ctx);
+    }
+
+    while(isspace(ctx->cChar)) {
         context_next_char(ctx);
     }
 
@@ -230,7 +238,18 @@ void tokenize_html(context_t* ctx)
 
         ctx->cToken = t;
         ctx->tokens[ctx->tokensSize++] = t;
+        ident = 1;
+        isInTag = 1;
 
+    } else if(ctx->cChar == '=') {
+        token t = {0};
+
+        t.token_type = assign;
+
+        ctx->cToken = t;
+        ctx->tokens[ctx->tokensSize++] = t;
+        context_next_char(ctx);
+        isAfterAssn = 1;
     } else if (ctx->cChar  == '>') {
         token t = {0};
 
@@ -238,16 +257,42 @@ void tokenize_html(context_t* ctx)
 
         ctx->cToken = t;
         ctx->tokens[ctx->tokensSize++] = t;
-    } else {
+        context_next_char(ctx);
+        isInTag = 0;
+    } else if(isalnum(ctx->cChar)) {
         do {
             lexeme[size++] = ctx->cChar;
             context_next_char(ctx);
-        } while(isalnum(ctx->cChar));
+        } while(isalnum(ctx->cChar) || (ispunct(ctx->cChar) &&
+        (ctx->cChar != '<' && ctx->cChar != '>')));
 
         token t = {0};
 
+        if(ident) {
+            t.token_type = htmlident;
+            ident = 0;
+        }else {
+            t.token_type = htmlstr;
+            if(isInTag && !isAfterAssn) {
+                t.token_type = tagp;
+            }
+
+            if(isAfterAssn) {
+                isAfterAssn = 0;
+            }
+        }
+
         strcpy(t.data.ident.lexeme, lexeme);
         t.data.ident.size = strlen(lexeme);
+
+        ctx->cToken = t;
+        ctx->tokens[ctx->tokensSize++] = t;
+    } else {
+        token t = {0};
+
+        t.token_type = unrecognized;
+        t.data.ident.lexeme[0] = ctx->cChar;
+        context_next_char(ctx);
 
         ctx->cToken = t;
         ctx->tokens[ctx->tokensSize++] = t;

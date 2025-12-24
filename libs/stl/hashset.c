@@ -15,7 +15,7 @@ size_t hash(void* value, size_t vsize)
     return (size_t)((msize + vsize) % (MAXBUFFERSIZE));
 }
 
-void hset_store_impl(Hash_Set* set, void* key, void* value, size_t offset)
+void hset_store_impl(Hash_Set* set, const void* key, void* value, size_t offset)
 {
     char* key_stringified = (char*)key;
     size_t hashv = (hash(key,
@@ -47,7 +47,7 @@ int hashpair_isnull(Hash_Pair hp)
     return 1;
 }
 
-void* hset_get(Hash_Set* set, void* key)
+void* hset_get(Hash_Set* set, const void* key)
 {
     char* key_stringified = (char*)key;
     size_t hashv = (hash(key,

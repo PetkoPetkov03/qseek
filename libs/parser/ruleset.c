@@ -114,6 +114,41 @@ void file(context_t *ctx)
     }
 }
 
+void tag(context_t *ctx)
+{
+    if(expect(ctx, htmlident)) {
+        if(accept_token(ctx, tagp)) {
+            expect(ctx, assign);
+            expect(ctx, htmlstr);
+        }
+        expect(ctx, tagend);
+    }
+}
+
+void htmlstra(context_t *ctx)
+{
+    expect(ctx, htmlstr);
+}
+
+void line(context_t *ctx)
+{
+    if(accept_token(ctx, tagstart) || accept_token(ctx, ctagstart)) {
+        tag(ctx);
+    } else {
+        htmlstra(ctx);
+    }
+}
+
+void html(context_t *ctx)
+{
+    line(ctx);
+
+    while(ctx->cToken.token_type == tagstart ||
+    ctx->cToken.token_type == ctagstart ||
+    (ctx->cToken.token_type == htmlstr)) {
+        line(ctx);
+    }
+}
 
 void parse_func(context_t *ctx)
 {
@@ -126,5 +161,11 @@ void parse_func(context_t *ctx)
         tokenize(ctx);
 
         url(ctx);
+    }
+
+    if(ctx->parser_type == HTML) {
+        tokenize(ctx);
+
+        html(ctx);
     }
 }

@@ -8,6 +8,7 @@ int main()
     char cwd[PATH_MAX];
     getcwd(cwd, PATH_MAX);
     sprintf(cwd, "%s/%s.html", cwd, "cache/crawlertest");
+    printf("CWD: %s\n", cwd);
     context_t ctx = context_init(cwd);
 
     set_mode(&ctx, HTML);
