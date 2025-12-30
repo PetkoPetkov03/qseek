@@ -9,10 +9,25 @@
 #include <fcntl.h>
 #include <string.h>
 #include <stdint.h>
+#include <stdint.h>
+#include <stl/array.h>
 
-typedef uint8_t u8;
+typedef uint8_t uint8;
+typedef char* str;
 
+typedef struct {
+    str name;
+    str words[1024];
+    size_t words_size;
+    float instances[1024];
+    size_t instances_size;
+} doc;
 
-void tfidf(char* word, u8);
+static inline doc doc_init(str d_name) {
+    doc result = { .name = d_name, .words = {0}, .words_size = 0,
+    .instances = {0}, .instances_size = 0 };
+
+    return result;
+}
 
 #endif

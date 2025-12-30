@@ -26,7 +26,6 @@ void scanner_load(scanner_t* scanner)
 
   if(fd == -1) {
       perror("file not found");
-
       exit(EXIT_FAILURE);
   }
 

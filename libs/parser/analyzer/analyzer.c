@@ -26,7 +26,7 @@ int expect(context_t* ctx, token_t T)
 {
     if(accept_token(ctx, T)) return 1;
 
-    //print_tokens(ctx);
+    printf("current Char %c, Current Token %s\n", ctx->cChar, ctx->cToken);
     context_error_report(ctx, "unexpected symbol");
 
     return 0;

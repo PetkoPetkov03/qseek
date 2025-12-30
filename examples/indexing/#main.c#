@@ -130,6 +130,13 @@ int main()
     int map[1024][1024];
     DocToIndexMap used[1024];
 
+    doc *docs = (doc*)files.data;
+    for(size_t filei = 0; filei < files.size; filei++) {
+        doc *cdoc = docs[filei];
 
+        for(size_t wordi = 0; wordi < cdoc.words_size; wordi++) {
+            
+        }
+    }
     return 0;
 }

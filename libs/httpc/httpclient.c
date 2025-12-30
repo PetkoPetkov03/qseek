@@ -39,7 +39,7 @@ void client_fetch_input()
     strcat(buffer, cwd);
     strcat(buffer, "/test.txt");
 
-    int inputFd = open(buffer, O_CREAT|O_RDWR);
+    int inputFd = open(buffer, O_CREAT|O_RDWR, 0667);
     strcat(input, "\n");
 
     write(inputFd, input, sizeof(input)/sizeof(input[0]));
