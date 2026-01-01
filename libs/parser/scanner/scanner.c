@@ -6,6 +6,7 @@
 #include <parser/context.h>
 #include <stl/cast.h>
 #include <stdio.h>
+#include <string.h>
 
 scanner_t* init_scanner()
 {
@@ -21,8 +22,8 @@ scanner_t* init_scanner()
 
 void scanner_load(scanner_t* scanner)
 {
-
-  int fd = open(scanner->ctx->file_path, O_RDONLY);
+  char* path = strdup(scanner->ctx->file_path);
+  int fd = open(path, O_RDONLY);
 
   if(fd == -1) {
       perror("file not found");
@@ -41,6 +42,7 @@ void scanner_load(scanner_t* scanner)
   }
 
   close(fd);
+  free(path);
 }
 
 char scanner_get_next_char(scanner_t* scanner)

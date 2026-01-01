@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <stl/cast.h>
 #include <string.h>
+#include <linux/limits.h>
 
 context_t context_init(const char* file_path)
 {

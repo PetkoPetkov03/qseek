@@ -5,7 +5,7 @@
 #include <stddef.h>
 
 typedef struct {
-    void* data;
+    void* data[1024];
     size_t size;
 } ArrayWrapper;
 

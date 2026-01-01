@@ -23,9 +23,10 @@ typedef struct {
     size_t instances_size;
 } doc;
 
-static inline doc doc_init(str d_name) {
-    doc result = { .name = d_name, .words = {0}, .words_size = 0,
-    .instances = {0}, .instances_size = 0 };
+static inline doc* doc_init(str d_name) {
+    doc *result = (doc*)calloc(0, sizeof(doc));
+    (result->name) = (char*)malloc(strlen(d_name)+1);
+    strcpy((result->name), d_name);
 
     return result;
 }
