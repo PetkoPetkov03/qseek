@@ -2,7 +2,7 @@ CC  := gcc
 CXX := g++
 
 INCLUDES := -I./includes
-CFLAGS   := -g -Wall -Wextra -Wshadow -Wuninitialized -O0 $(INCLUDES)
+CFLAGS   := -g -Wall -Wextra -Wshadow -Wuninitialized -O0 $(INCLUDES) -lm
 CXXFLAGS := -g -Wall -Wextra -Wshadow -O0 $(INCLUDES)
 
 # Directories

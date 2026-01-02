@@ -10,6 +10,8 @@
 #include <dirent.h>
 #include <stl/array.h>
 
+#define DOCMAX 10
+
 ArrayWrapper parse_dirs_fdoc(str path)
 {
     ArrayWrapper wrapper = { .data = {0}, .size = 0 };
@@ -30,7 +32,7 @@ ArrayWrapper parse_dirs_fdoc(str path)
                 char* full_path = malloc(fpathSize);
 
                 int path_construct =
-                sprintf(full_path, "%s/%s\0", path, ent->d_name);
+                sprintf(full_path, "%s/%s", path, ent->d_name);
 
                 if(path_construct == 1) {
                     fprintf(stderr, "string construct error\n");
@@ -38,10 +40,8 @@ ArrayWrapper parse_dirs_fdoc(str path)
                 }
 
                 (wrapper.data[size]) = doc_init(full_path);
-                printf("PUSHED: %d:%s\n", size, full_path);
-                size++;
 
-                printf("Ent: %s\n", ent->d_name);
+                size++;
             }
         }
     }
@@ -83,23 +83,8 @@ void fill_words(ArrayWrapper wrapper)
             }
         }
 
-        printf("name ptr BEFORE: %p %s\n", (void*)doci->name, doci->name);
         context_clean(&ctx);
-        printf("name ptr AFTER: %p %s\n", (void*)doci->name, doci->name);
-
     }
-}
-
-typedef struct {
-    str doc_name;
-    int used_index;
-} DocToIndexMap;
-
-int find_instances_for(int map[1024][1024],
-DocToIndexMap used[], str word, str doc_name)
-{
-
-    return 0;
 }
 
 int main()
@@ -109,25 +94,17 @@ int main()
 
     strcat(cwd, "/cache");
 
-    size_t p_size = strlen(cwd);
-
     ArrayWrapper files = parse_dirs_fdoc(cwd);
 
     fill_words(files);
 
-    for(size_t filei = 0; filei < files.size; filei++) {
-        void** docs = files.data;
-        doc* cDoc = (doc*)docs[filei];
-        printf("Path: %s\n", cDoc->name);
-        for(size_t wordi = 0; wordi < cDoc->words_size; wordi++) {
-            printf("Doc %ld Word %s\n", filei+1, cDoc->words[wordi]);
-        }
-    }
+    IndexingQueue *queue = init_indexingq();
 
+    add_documents(queue, (doc**)files.data, files.size);
 
-    int map[10][1024];
-    DocToIndexMap used[1024];
+    indexing_print(queue);
 
+    free_indexingq(queue);
 
     return 0;
 }
